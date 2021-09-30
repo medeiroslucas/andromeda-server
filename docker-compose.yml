@@ -1,0 +1,14 @@
+version: "3.2"
+
+services:
+
+  server:
+    env_file: .env
+    volumes:
+      - ./:/home/
+    build:
+      dockerfile: docker/Dockerfile
+      context: .
+    ports:
+      - "5000:5000"
+    command: python server.py
