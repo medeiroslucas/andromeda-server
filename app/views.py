@@ -1,5 +1,6 @@
 from flask import jsonify, request, Blueprint
 from app.coordenates import get_planet_coord
+from utils import get_astro_dict
 
 
 server_bp = Blueprint('server_dp', __name__)
@@ -22,3 +23,6 @@ def get_planet_position():
     return jsonify(planet=planet, az=az, alt=alt), 200
 
 
+@server_bp.route('/astro_list', methods=['GET'])
+def get_astro_list():
+    return get_astro_dict()

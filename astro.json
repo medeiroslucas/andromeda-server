@@ -1,0 +1,10 @@
+{
+  "moon": "satellite",
+  "venus": "planet",
+  "mars": "planet",
+  "jupiter": "planet",
+  "neptune": "planet",
+  "uranus": "planet",
+  "mercury": "planet",
+  "saturn": "planet"
+}
