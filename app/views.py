@@ -25,4 +25,26 @@ def get_planet_position():
 
 @server_bp.route('/astro_list', methods=['GET'])
 def get_astro_list():
-    return get_astro_dict()
+    astro_dict = get_astro_dict()
+
+    astro_list = []
+
+    json = request.args.to_dict()
+
+    lat = float(json.get("lat"))
+    long = float(json.get("long"))
+
+    for astro in astro_dict:
+        astro_obj = {"name": astro, "category": astro_dict[astro]}
+
+        coord = get_planet_coord(astro, lat, long)
+
+        az = float(coord.az.deg)
+        alt = float(coord.alt.deg)
+
+        astro_obj["az"] = az
+        astro_obj["alt"] = alt
+
+        astro_list.append(astro_obj)
+
+    return jsonify(astros=astro_list)
