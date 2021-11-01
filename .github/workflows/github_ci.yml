@@ -1,0 +1,72 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  flake8-lint:
+    name: Run lint
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
+    steps:
+      - name: Install deps
+        run: pip install flake8
+
+      - name: Flake8
+        run: flake8
+
+  pytest:
+    name: Testing
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install deps
+        run: |
+          pip install poetry
+          poetry config virtualenvs.in-project true
+          poetry install
+
+      - name: Run Pytest
+        run: |
+          export $(cat .env | xargs)
+          source .venv/bin/activate
+          export PYTHONPATH=$(pwd)
+          coverage run -m pytest --junitxml=tests_execution_report.xml
+          coverage xml -i
+
+  build-staging:
+    name: Build Staging
+    runs-on: ubuntu-latest
+    needs: pytest
+    if: ${{startsWith(github.ref, 'refs/tags/v') && contains(github.ref, 'dev')}}
+
+    steps:
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Publish Image
+        uses: craftech-io/package-action@v3.1.0
+        with:
+          tags: ${{ env.RELEASE_VERSION }}
+          dockerfile: docker/Dockerfile
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy-staging:
+    name: Deploy Staging
+    runs-on: ubuntu-latest
+    needs: [pytest, build-staging]
+    if: ${{startsWith(github.ref, 'refs/tags/v') && contains(github.ref, 'dev')}}
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: staging-pi2-andromeda-server
+          heroku_email: medeirosrosalucas@gmail.com
+          usedocker: true
+          docker_build_args: --file docker/Dockerfile
