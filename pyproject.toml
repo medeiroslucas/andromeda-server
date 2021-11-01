@@ -8,7 +8,8 @@ authors = ["lucas <medeirosrosalucas@gmail.com>"]
 python = ">=3.7,<3.9"
 python-decouple = "3.4"
 flask = "2.0.1"
-astropy = "*"
+astropy = "4.3.1"
+waitress = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "6.2.4"
