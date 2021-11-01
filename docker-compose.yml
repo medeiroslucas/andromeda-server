@@ -7,7 +7,7 @@ services:
     volumes:
       - ./:/home/
     build:
-      dockerfile: docker/Dockerfile
+      dockerfile: Dockerfile
       context: .
     ports:
       - "5000:5000"

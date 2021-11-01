@@ -53,7 +53,7 @@ jobs:
         uses: craftech-io/package-action@v3.1.0
         with:
           tags: ${{ env.RELEASE_VERSION }}
-          dockerfile: docker/Dockerfile
+          dockerfile: Dockerfile
           access_token: ${{ secrets.GITHUB_TOKEN }}
 
   deploy-staging:
@@ -70,4 +70,3 @@ jobs:
           heroku_app_name: staging-pi2-andromeda-server
           heroku_email: medeirosrosalucas@gmail.com
           usedocker: true
-          docker_build_args: --file docker/Dockerfile
