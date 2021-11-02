@@ -4,11 +4,11 @@ services:
 
   server:
     env_file: .env
-    volumes:
-      - ./:/home/
+#    volumes:
+#      - ./:/home/
     build:
-      dockerfile: docker/Dockerfile
+      dockerfile: Dockerfile
       context: .
     ports:
       - "5000:5000"
-    command: python server.py
+#    command: python server.py

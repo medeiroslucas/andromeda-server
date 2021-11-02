@@ -6,6 +6,12 @@ from utils import get_astro_dict
 server_bp = Blueprint('server_dp', __name__)
 
 
+@server_bp.route('/', methods=['GET'])
+def health_check():
+
+    return jsonify(status="Ok"), 200
+
+
 @server_bp.route('/planets', methods=['GET'])
 def get_planet_position():
 
