@@ -5,7 +5,6 @@ RUN apt-get update
 WORKDIR /home
 
 RUN pip install poetry==1.1.11
-RUN curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
 
 COPY pyproject.toml pyproject.toml
 COPY poetry.lock poetry.lock
