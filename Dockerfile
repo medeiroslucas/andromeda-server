@@ -21,6 +21,6 @@ COPY settings.py settings.py
 COPY utils.py utils.py
 COPY astro.json astro.json
 
-EXPOSE 80
+EXPOSE $PORT
 
-CMD waitress-serve --call --port=80 'app:create_app'
+CMD waitress-serve --call --port=$PORT 'app:create_app'
