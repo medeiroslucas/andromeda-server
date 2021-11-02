@@ -5,6 +5,7 @@ RUN apt-get update
 WORKDIR /home
 
 RUN pip install poetry==1.1.11
+RUN curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
 
 COPY pyproject.toml pyproject.toml
 COPY poetry.lock poetry.lock
@@ -20,6 +21,6 @@ COPY settings.py settings.py
 COPY utils.py utils.py
 COPY astro.json astro.json
 
-EXPOSE 80
+EXPOSE 5000
 
-CMD waitress-serve --call --port=80 'app:create_app'
+CMD waitress-serve --call --port=5000 'app:create_app'
